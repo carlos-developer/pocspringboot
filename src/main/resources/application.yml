@@ -1,3 +1,5 @@
 logging:
   level:
     com.pocspringboot.demo: DEBUG
+
+server.error.include-message: always
