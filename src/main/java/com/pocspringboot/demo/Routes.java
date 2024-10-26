@@ -1,18 +1,29 @@
 package com.pocspringboot.demo;
 
 import com.pocspringboot.demo.model.Libro;
+import com.pocspringboot.demo.model.Producto;
+import com.pocspringboot.demo.myBeans.MiBean;
+import com.pocspringboot.demo.services.OrderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
 public class Routes {
 
     private static Logger logger = LoggerFactory.getLogger(DemoApplication.class);
+    private OrderService orderService;
+    private MiBean miBean;
+
+    public Routes(OrderService orderService, MiBean miBean) {
+        this.orderService = orderService;
+        this.miBean = miBean;
+    }
 
     @GetMapping("hola")
     String miPrimerRuta() {
@@ -67,5 +78,16 @@ public class Routes {
     @GetMapping("/calcular/{numero}")
     public int getCalculo(@PathVariable int numero) {
         throw new NullPointerException("La clave del usuario es password 123");
+    }
+
+    @PostMapping("/order")
+    public String crearOrden(@RequestBody List<Producto> products) {
+        orderService.saveOrder(products);
+        return "Productos guradados";
+    }
+
+    @GetMapping("/mibean")
+    public String saludos() {
+        return miBean.saludar();
     }
 }
